@@ -1,0 +1,49 @@
+<div class="stock-price-table-container p-3">
+  <div class="dashboard-title d-flex justify-content-center my-5">Stock Dashboard</div>
+  <table class="table table-hover stock-list">
+    <thead>
+      <tr>
+        <th class="header-cell" scope="col">#</th>
+        <th class="header-cell" scope="col">Stock Name </th>
+        <th class="header-cell" scope="col">Stock Price</th>
+        <th class="header-cell" scope="col">Stock Status</th>
+        <th class="header-cell" scope="col">Last Updated</th>
+        <th class="header-cell" scope="col">Price Trends</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let st of availableStocks | keyvalue;let in = index">
+        <th scope="row">{{in+1}}</th>
+        <td>{{st.key}}</td>
+        <td [ngClass]="getPriceStatus(st.value.priceDifference)">
+          <div class="stock-current-price mx-2"> {{st.value.currentPrice | number : '1.2-2'}} </div>
+        </td>
+        <td>
+          <div class="price-status d-flex">
+            <div class="svg-image-container">
+              <ng-container>
+                <svg *ngIf="st.value.priceDifference > 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                  fill="green" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd"
+                    d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z" />
+                </svg>
+                <svg *ngIf="st.value.priceDifference < 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                  fill="red" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd"
+                    d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z" />
+                </svg>
+              </ng-container>
+            </div>
+            <div class="price-difference">{{st.value.priceDifference}}</div>
+
+          </div>
+        </td>
+        <td>{{st.value.lastUpdated | date:'medium'}}</td>
+        <td>
+          <app-sparkline-chart [data]="st.value.historyPrices"></app-sparkline-chart>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
