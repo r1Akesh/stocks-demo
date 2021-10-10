@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getLiveUpdates():void {
-    this.StockService.initializeSocketService().subscribe((res:any) => {
+    const obrRef = this.StockService.initializeSocketService().subscribe((res:any) => {
       res.forEach(element => {
         let [stockName,stockPrice] = element;
         stockPrice= stockPrice.toFixed(2);
@@ -39,6 +39,10 @@ export class DashboardComponent implements OnInit {
 
   getPriceStatus(stockPriceDifference): string {
     return (stockPriceDifference) ? (stockPriceDifference < 0) ? 'price-decreased' : 'price-increased' : 'price-not-updated'
+  }
+
+  ngOnDestroy() {
+    this.StockService.closeSocketConnection();
   }
   
 }

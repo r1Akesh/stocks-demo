@@ -12,4 +12,8 @@ export class StockService {
   initializeSocketService() {
     return socketSubject
   }
+
+  closeSocketConnection() {
+    socketSubject.complete();
+  }
 }
